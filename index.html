@@ -497,9 +497,14 @@
     </div>
 
     <script>
-        // Initialize with empty posts array
-        let blogPosts = [];
+        // Initialize with posts from localStorage or empty array
+        let blogPosts = JSON.parse(localStorage.getItem('prshaBlogPosts')) || [];
         let isLoggedIn = false;
+
+        // Save posts to localStorage
+        function savePosts() {
+            localStorage.setItem('prshaBlogPosts', JSON.stringify(blogPosts));
+        }
 
         // Login credentials
         const validUsername = "Prsha";
@@ -666,6 +671,9 @@
                 // Sort posts by timestamp (newest first)
                 blogPosts.sort((a, b) => b.timestamp - a.timestamp);
                 
+                // Save to localStorage
+                savePosts();
+                
                 renderPosts();
                 toggleNewPostForm();
                 alert('Post published successfully!');
@@ -680,6 +688,8 @@
             
             if (confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
                 blogPosts.splice(index, 1);
+                // Save to localStorage after deletion
+                savePosts();
                 renderPosts();
             }
         }

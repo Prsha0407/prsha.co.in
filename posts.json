@@ -1,3 +1,12 @@
-json{
-  "posts": []
-}    
+{
+  "posts": [
+    {
+      "date": "27/07/2025",
+      "title": "Welcome to My Blog",
+      "content": "This is my first post on my beautiful blog. I'm excited to share my thoughts, memories, and moments with you.",
+      "tags": ["welcome", "first-post", "memories"],
+      "photos": [],
+      "timestamp": 1722038400000
+    }
+  ]
+}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prsha...</title>
+    <title>Prsha.. - Poetry & Moods</title>
     <style>
         * {
             margin: 0;
@@ -12,694 +12,582 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #f8d7da, #f2c2c6);
-            min-height: 100vh;
+            font-family: 'Georgia', 'Times New Roman', serif;
             line-height: 1.6;
+            background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%);
+            min-height: 100vh;
+            color: #8B4513;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
 
         header {
             text-align: center;
-            margin-bottom: 40px;
             padding: 40px 0;
-            position: relative;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(255, 182, 193, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        h1 {
-            color: #7B3F00;
-            font-size: 3rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+        .main-title {
+            color: #8B4513;
+            font-size: 4em;
+            margin-bottom: 20px;
             font-style: italic;
+            text-shadow: 2px 2px 8px rgba(255, 182, 193, 0.5);
+            font-weight: 300;
         }
 
         .subtitle {
-            color: #7B3F00;
-            font-size: 1.2rem;
+            color: #8B4513;
+            font-size: 1.3em;
             font-style: italic;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 3px rgba(255, 182, 193, 0.3);
         }
 
-        .login-to-post-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #7B3F00;
-            color: white;
-            border: none;
-            padding: 12px 20px;
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .posts-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
             border-radius: 25px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 35px;
+            box-shadow: 0 10px 40px rgba(255, 182, 193, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .login-to-post-btn:hover {
-            background: #5D2F00;
-            transform: translateY(-2px);
-        }
-
-        .login-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: rgba(255, 255, 255, 0.95);
-            margin: 15% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .close {
-            color: #7B3F00;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            line-height: 1;
-        }
-
-        .close:hover {
-            color: #5D2F00;
-        }
-
-        .admin-controls {
-            display: none;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .blog-post {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .blog-post:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-        }
-
-        .post-date {
-            color: #7B3F00;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .post-title {
-            color: #7B3F00;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        .post-content {
-            color: #7B3F00;
-            font-size: 1rem;
-            margin-bottom: 20px;
-        }
-
-        .post-tags {
+        .sidebar {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 25px;
         }
 
-        .tag {
-            background: #ff99cc;
-            color: #7B3F00;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-decoration: none;
-            transition: background 0.3s ease;
-        }
-
-        .tag:hover {
-            background: #ff66b3;
-        }
-
-        .new-post-form {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
+        .login-form, .new-post-form {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
             padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(255, 182, 193, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .section-title {
+            color: #8B4513;
+            margin-bottom: 25px;
+            font-size: 1.6em;
+            font-style: italic;
+            text-align: center;
+            border-bottom: 2px solid rgba(139, 69, 19, 0.3);
+            padding-bottom: 15px;
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        .form-group label {
+        label {
             display: block;
-            color: #7B3F00;
-            font-weight: bold;
             margin-bottom: 8px;
+            color: #8B4513;
+            font-weight: bold;
+            font-style: italic;
         }
 
-        .form-group input,
-        .form-group textarea {
+        input[type="text"], input[type="password"], input[type="date"], textarea {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ff99cc;
-            border-radius: 8px;
-            font-family: inherit;
+            padding: 15px;
+            border: 2px solid rgba(139, 69, 19, 0.3);
+            border-radius: 15px;
             font-size: 16px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.8);
+            color: #8B4513;
+            transition: all 0.3s ease;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
+        input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus, textarea:focus {
             outline: none;
-            border-color: #ff66b3;
-            box-shadow: 0 0 0 3px rgba(255, 153, 204, 0.2);
+            border-color: #8B4513;
+            box-shadow: 0 0 0 4px rgba(139, 69, 19, 0.1);
+            background: rgba(255, 255, 255, 0.95);
         }
 
-        .form-group textarea {
-            min-height: 120px;
+        textarea {
             resize: vertical;
+            min-height: 150px;
+            font-family: 'Georgia', 'Times New Roman', serif;
         }
 
-        .submit-btn {
-            background: #7B3F00;
+        .btn {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 15px 30px;
             border-radius: 25px;
+            cursor: pointer;
             font-size: 16px;
             font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-style: italic;
+            transition: all 0.3s ease;
+            text-transform: capitalize;
+            letter-spacing: 1px;
+            width: 100%;
         }
 
-        .submit-btn:hover {
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(123, 63, 0, 0.4);
+            box-shadow: 0 15px 30px rgba(139, 69, 19, 0.4);
+            background: linear-gradient(135deg, #A0522D 0%, #8B4513 100%);
         }
 
-        .submit-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
+        .btn:active {
+            transform: translateY(0);
         }
 
-        .toggle-form-btn {
-            background: #7B3F00;
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: background 0.3s ease;
-        }
-
-        .toggle-form-btn:hover {
-            background: #5D2F00;
-        }
-
-        .logout-btn {
-            background: #ff4d6d;
-            color: white;
-            border: none;
-            padding: 8px 15px;
+        .post {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-            margin-left: 10px;
-            transition: background 0.3s ease;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 25px rgba(255, 182, 193, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
         }
 
-        .logout-btn:hover {
-            background: #e6435a;
-        }
-
-        .delete-btn {
-            background: #ff4d6d;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: background 0.3s ease;
-            float: right;
-        }
-
-        .delete-btn:hover {
-            background: #e6435a;
+        .post:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 182, 193, 0.25);
         }
 
         .post-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(139, 69, 19, 0.2);
         }
 
-        .post-date-title {
+        .post-title {
+            color: #8B4513;
+            font-size: 1.5em;
+            margin: 0;
+            font-style: italic;
             flex: 1;
         }
 
-        .error-message {
-            color: #ff4d6d;
-            font-size: 14px;
-            margin-top: 10px;
+        .post-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            font-size: 0.9em;
+            color: #8B4513;
+        }
+
+        .post-date {
+            background: rgba(139, 69, 19, 0.15);
+            color: #8B4513;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        .post-content {
+            color: #8B4513;
+            font-size: 1.1em;
+            line-height: 1.9;
+            white-space: pre-wrap;
+            font-style: italic;
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            margin-top: 5px;
+        }
+
+        .delete-btn:hover {
+            background: linear-gradient(135deg, #A0522D 0%, #8B4513 100%);
+            transform: scale(1.05);
         }
 
         .empty-state {
             text-align: center;
-            color: #7B3F00;
+            padding: 80px 20px;
+            color: #8B4513;
             font-style: italic;
-            margin: 60px 0;
-            font-size: 1.1rem;
         }
 
-        .loading {
-            text-align: center;
-            color: #7B3F00;
-            font-style: italic;
-            margin: 40px 0;
+        .empty-state h3 {
+            margin-bottom: 15px;
+            color: #8B4513;
+            font-size: 1.8em;
         }
 
-        .info-note {
-            background: rgba(255, 255, 102, 0.3);
-            border: 1px solid #ff99cc;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            color: #7B3F00;
-            font-size: 14px;
-        }
-
-        .success-message {
+        .hidden {
             display: none;
-            margin-top: 15px;
-            padding: 10px;
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
-            color: #155724;
         }
 
-        footer {
+        .login-status {
             text-align: center;
-            margin-top: 60px;
-            padding: 30px 0;
-            color: #7B3F00;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(139, 69, 19, 0.15);
+            border-radius: 15px;
+            color: #8B4513;
             font-style: italic;
         }
 
-        @media (max-width: 600px) {
+        .logout-btn {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            padding: 10px 20px;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .error-message {
+            background: rgba(139, 69, 19, 0.15);
+            color: #8B4513;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-style: italic;
+            border: 1px solid rgba(139, 69, 19, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-title {
+                font-size: 2.5em;
+            }
+            
+            .subtitle {
+                font-size: 1.1em;
+            }
+            
             .container {
                 padding: 15px;
             }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .blog-post {
-                padding: 20px;
-            }
+        }
 
-            .login-to-post-btn {
-                position: static;
-                margin: 20px auto 0;
-                display: block;
-                width: fit-content;
-            }
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
 
-            header {
-                position: static;
-            }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .heart {
+            color: #8B4513;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
+
+        ::placeholder {
+            color: rgba(139, 69, 19, 0.7);
+            font-style: italic;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <button class="login-to-post-btn" onclick="openLoginModal()">🔑 Login to Post</button>
-            <h1>Prsha...</h1>
-            <p class="subtitle">"Time... Memories.. Moments, feelings lead us to tears..<br>Hope my Love, care and friendship wins over your fears..."</p>
+            <h1 class="main-title">Prsha..</h1>
+            <p class="subtitle">
+                <em>Time... Memories... Moments... feelings lead us to tears...</em><br>
+                <em>Hope my Love, care and friendship wins over your fears... <span class="heart">♡</span></em>
+            </p>
         </header>
 
-        <!-- Login Modal -->
-        <div id="loginModal" class="login-modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeLoginModal()">&times;</span>
-                <h3 style="color: #7B3F00; margin-bottom: 20px; text-align: center;">Login to Create Posts</h3>
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" placeholder="Enter username">
+        <div class="main-content">
+            <section class="posts-section">
+                <h2 class="section-title">My Heart's Canvas</h2>
+                <div id="posts-container">
+                    <div class="empty-state">
+                        <h3>Welcome to Prsha's World...</h3>
+                        <p>Explore the beautiful collection of poems and moods shared here.</p>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" placeholder="Enter password">
+            </section>
+
+            <aside class="sidebar">
+                <div id="login-section" class="login-form">
+                    <h3 class="section-title">Enter Your Sacred Space</h3>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" placeholder="Enter username..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" placeholder="Enter password..." required>
+                        </div>
+
+                        <button type="submit" class="btn">Express..</button>
+                    </form>
+                    <div id="error-message" class="error-message hidden">
+                        Invalid credentials. Please try again with the correct username and password.
+                    </div>
                 </div>
-                <button onclick="login()" class="submit-btn" style="width: 100%;">🔐 Login</button>
-                <div id="loginError" class="error-message" style="display: none; text-align: center;"></div>
-            </div>
+
+                <div id="post-section" class="new-post-form hidden">
+                    <div class="login-status">
+                        <p>Welcome back, <strong>Prsha</strong>! <span class="heart">♡</span></p>
+                        <button class="btn logout-btn" onclick="logout()">Leave Sacred Space</button>
+                    </div>
+                    
+                    <h3 class="section-title">Pour Your Heart Out</h3>
+                    <form id="post-form">
+                        <div class="form-group">
+                            <label for="post-date">Date of Blog:</label>
+                            <input type="date" id="post-date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="post-header">Header:</label>
+                            <input type="text" id="post-header" placeholder="Give your thoughts a beautiful title..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="post-description">Description:</label>
+                            <textarea id="post-description" placeholder="Let your soul speak through words..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn">Submit</button>
+                    </form>
+                </div>
+            </aside>
         </div>
-
-        <main>
-            <!-- Admin Controls (only visible when logged in) -->
-            <div id="adminControls" class="admin-controls">
-                <div class="info-note">
-                    <strong>📝 Quick Publishing:</strong><br>
-                    1. Fill out the form below<br>
-                    2. Click "Publish Post" - it will be added directly!<br>
-                    3. Your post appears immediately for all visitors<br>
-                    <em>Note: Posts are stored locally and will persist across visits.</em>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: #7B3F00; margin: 0;">Admin Panel</h3>
-                    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
-                </div>
-                
-                <button class="toggle-form-btn" onclick="toggleNewPostForm()">✏️ Write New Post</button>
-                
-                <div id="newPostForm" class="new-post-form" style="display: none;">
-                    <h3 style="color: #7B3F00; margin-bottom: 20px;">Create New Blog Post</h3>
-                    <div class="form-group">
-                        <label for="postTitle">Post Title:</label>
-                        <input type="text" id="postTitle" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="postDate">Post Date:</label>
-                        <input type="date" id="postDate" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="postContent">Content:</label>
-                        <textarea id="postContent" placeholder="Share your thoughts, memories, and moments..." required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="postTags">Tags (separate with commas):</label>
-                        <input type="text" id="postTags" placeholder="life, memories, thoughts, feelings">
-                    </div>
-                    
-                    <button type="button" class="submit-btn" onclick="publishPost()">📝 Publish Post</button>
-                    
-                    <div id="successMessage" class="success-message">
-                        ✅ Post published successfully! It's now visible to all visitors.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Blog Posts Display -->
-            <div id="blogPosts">
-                <div class="loading">Loading your memories and moments...</div>
-            </div>
-        </main>
-
-        <footer>
-            <p>Made with 💕 and lots of pink pixels</p>
-        </footer>
     </div>
 
     <script>
-        // Initialize with posts from localStorage and sample posts
-        let blogPosts = JSON.parse(localStorage.getItem('prshaBlogPosts')) || [
-            {
-                date: "27/07/2025",
-                title: "Welcome to My Heart",
-                content: "This is where I'll share my deepest thoughts, precious memories, and beautiful moments. Each post is a piece of my soul, captured in time. Thank you for being part of this journey with me.\n\nHere, feelings flow freely, tears are welcomed, and hope always wins over fears.",
-                tags: ["welcome", "heart", "memories", "journey"],
-                timestamp: new Date('2025-07-27').getTime()
-            }
-        ];
+        let posts = [];
         let isLoggedIn = false;
+        const validUsername = 'prsha';
+        const validPassword = 'V@P$0407';
 
-        // Login credentials
-        const validUsername = "Prsha";
-        const validPassword = "V@P$0407";
+        // Debug: Log the expected credentials
+        console.log('Expected username:', validUsername);
+        console.log('Expected password:', validPassword);
 
-        // Save posts to localStorage
-        function savePosts() {
-            localStorage.setItem('prshaBlogPosts', JSON.stringify(blogPosts));
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
         }
 
-        // Load posts
-        function loadPosts() {
-            renderPosts();
-        }
-
-        function openLoginModal() {
-            document.getElementById('loginModal').style.display = 'block';
-        }
-
-        function closeLoginModal() {
-            document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('loginError').style.display = 'none';
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-        }
-
-        function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorDiv = document.getElementById('loginError');
-
+        function login(username, password) {
+            console.log('=== LOGIN ATTEMPT ===');
+            console.log('Entered username: "' + username + '"');
+            console.log('Entered password: "' + password + '"');
+            console.log('Expected username: "' + validUsername + '"');
+            console.log('Expected password: "' + validPassword + '"');
+            console.log('Username match:', username === validUsername);
+            console.log('Password match:', password === validPassword);
+            
             if (username === validUsername && password === validPassword) {
+                console.log('✅ LOGIN SUCCESSFUL');
                 isLoggedIn = true;
-                closeLoginModal();
-                document.getElementById('adminControls').style.display = 'block';
-                document.querySelector('.login-to-post-btn').style.display = 'none';
-                renderPosts();
+                
+                // Hide login form
+                const loginSection = document.getElementById('login-section');
+                const postSection = document.getElementById('post-section');
+                const errorMessage = document.getElementById('error-message');
+                
+                console.log('Hiding login section...');
+                loginSection.classList.add('hidden');
+                
+                console.log('Showing post section...');
+                postSection.classList.remove('hidden');
+                
+                console.log('Hiding error message...');
+                errorMessage.classList.add('hidden');
+                
+                // Set today's date as default
+                document.getElementById('post-date').value = new Date().toISOString().split('T')[0];
+                
+                return true;
             } else {
-                errorDiv.textContent = 'Invalid username or password. Please try again.';
-                errorDiv.style.display = 'block';
-                document.getElementById('password').value = '';
+                console.log('❌ LOGIN FAILED');
+                return false;
             }
         }
 
         function logout() {
             isLoggedIn = false;
-            document.getElementById('adminControls').style.display = 'none';
-            document.querySelector('.login-to-post-btn').style.display = 'block';
-            document.getElementById('newPostForm').style.display = 'none';
-            document.querySelector('.toggle-form-btn').textContent = '✏️ Write New Post';
-            clearForm();
-            renderPosts();
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('post-section').classList.add('hidden');
+            document.getElementById('login-form').reset();
         }
 
-        function toggleNewPostForm() {
-            const form = document.getElementById('newPostForm');
-            const btn = document.querySelector('.toggle-form-btn');
-            
-            if (form.style.display === 'none') {
-                form.style.display = 'block';
-                btn.textContent = '❌ Cancel';
-            } else {
-                form.style.display = 'none';
-                btn.textContent = '✏️ Write New Post';
-                clearForm();
-            }
-        }
-
-        function clearForm() {
-            document.getElementById('postTitle').value = '';
-            document.getElementById('postDate').value = '';
-            document.getElementById('postContent').value = '';
-            document.getElementById('postTags').value = '';
-            document.getElementById('successMessage').style.display = 'none';
-        }
-
-        function publishPost() {
-            if (!isLoggedIn) {
-                alert('Please login first to create posts.');
-                return;
-            }
-
-            const title = document.getElementById('postTitle').value.trim();
-            const selectedDate = document.getElementById('postDate').value;
-            const content = document.getElementById('postContent').value.trim();
-
-            // Validate required fields
-            if (!title) {
-                alert('Please enter a post title.');
-                return;
-            }
-            if (!selectedDate) {
-                alert('Please select a date.');
-                return;
-            }
-            if (!content) {
-                alert('Please enter some content.');
-                return;
-            }
-            
-            const tagsInput = document.getElementById('postTags').value;
-            const tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag);
-            
-            // Convert selected date to DD/MM/YYYY format
-            const dateObj = new Date(selectedDate);
-            const day = String(dateObj.getDate()).padStart(2, '0');
-            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-            const year = dateObj.getFullYear();
-            const formattedDate = `${day}/${month}/${year}`;
-            
-            // Use the selected date for timestamp (for sorting)
-            const timestamp = dateObj.getTime();
-            
-            // Create and add the new post
-            const newPost = { 
-                date: formattedDate, 
-                title, 
-                content, 
-                tags, 
-                timestamp 
+        function createPost(date, header, description) {
+            const post = {
+                id: Date.now(),
+                date: date,
+                header: header,
+                description: description,
+                timestamp: new Date()
             };
             
-            blogPosts.unshift(newPost); // Add to beginning (newest first)
-            blogPosts.sort((a, b) => b.timestamp - a.timestamp); // Sort by date
-            
-            // Save to localStorage
-            savePosts();
-            
-            // Show success message
-            document.getElementById('successMessage').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 3000);
-            
-            // Clear form and close
-            clearForm();
-            toggleNewPostForm();
-            
-            // Re-render posts
+            posts.unshift(post);
             renderPosts();
         }
 
-        function deletePost(index) {
-            if (!isLoggedIn) {
-                alert('Please login first to manage posts.');
-                return;
-            }
-            
-            if (confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
-                blogPosts.splice(index, 1);
-                savePosts();
+        function deletePost(id) {
+            if (isLoggedIn) {
+                posts = posts.filter(post => post.id !== id);
                 renderPosts();
             }
         }
 
         function renderPosts() {
-            const container = document.getElementById('blogPosts');
-            container.innerHTML = '';
+            const container = document.getElementById('posts-container');
             
-            if (blogPosts.length === 0) {
-                container.innerHTML = '<div class="empty-state">No memories shared yet. Login to share your first moment! ✨</div>';
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>Welcome to Prsha's World...</h3>
+                        <p>Explore the beautiful collection of poems and moods shared here.</p>
+                    </div>
+                `;
                 return;
             }
-            
-            blogPosts.forEach((post, index) => {
-                const article = document.createElement('article');
-                article.className = 'blog-post';
-                
-                const tagsHtml = post.tags && post.tags.length > 0 ? post.tags.map(tag => 
-                    `<span class="tag">${tag}</span>`
-                ).join('') : '';
 
-                const deleteButtonHtml = isLoggedIn ? 
-                    `<button class="delete-btn" onclick="deletePost(${index})" title="Delete this post">🗑️ Delete</button>` : '';
-                
-                article.innerHTML = `
+            container.innerHTML = posts.map(post => `
+                <article class="post fade-in">
                     <div class="post-header">
-                        <div class="post-date-title">
-                            <div class="post-date">${post.date}</div>
-                            <h2 class="post-title">${post.title}</h2>
+                        <h3 class="post-title">${post.header}</h3>
+                        <div class="post-meta">
+                            <span class="post-date">${formatDate(post.date)}</span>
+                            ${isLoggedIn ? `<button class="delete-btn" onclick="deletePost(${post.id})">Delete</button>` : ''}
                         </div>
-                        ${deleteButtonHtml}
                     </div>
-                    <div class="post-content">
-                        ${post.content.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('')}
-                    </div>
-                    ${tagsHtml ? `<div class="post-tags">${tagsHtml}</div>` : ''}
-                `;
-                
-                container.appendChild(article);
-            });
+                    <div class="post-content">${post.description}</div>
+                </article>
+            `).join('');
         }
 
-        // Modal click outside to close
-        window.onclick = function(event) {
-            const modal = document.getElementById('loginModal');
-            if (event.target == modal) {
-                closeLoginModal();
-            }
-        }
-
-        // Allow Enter key to submit login
+        // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('password').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    login();
-                }
-            });
+            console.log('DOM loaded, setting up event listeners');
             
-            document.getElementById('username').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    document.getElementById('password').focus();
-                }
-            });
-
-            // Set today's date as default for post date
-            const today = new Date();
-            const todayString = today.toISOString().split('T')[0];
-            setTimeout(() => {
-                if (document.getElementById('postDate')) {
-                    document.getElementById('postDate').value = todayString;
-                }
-            }, 100);
-
-            // Load posts
-            loadPosts();
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                console.log('Login form found, adding event listener');
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    console.log('=== FORM SUBMITTED ===');
+                    
+                    const usernameField = document.getElementById('username');
+                    const passwordField = document.getElementById('password');
+                    
+                    if (!usernameField || !passwordField) {
+                        console.error('Username or password field not found!');
+                        return;
+                    }
+                    
+                    const username = usernameField.value.trim();
+                    const password = passwordField.value;
+                    
+                    console.log('Form data collected');
+                    
+                    if (login(username, password)) {
+                        console.log('Login successful, updating UI');
+                        renderPosts();
+                    } else {
+                        console.log('Login failed, showing error');
+                        const errorMessage = document.getElementById('error-message');
+                        if (errorMessage) {
+                            errorMessage.classList.remove('hidden');
+                        }
+                        // Clear the form
+                        usernameField.value = '';
+                        passwordField.value = '';
+                    }
+                });
+            } else {
+                console.error('Login form not found!');
+            }
         });
+
+        document.getElementById('post-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!isLoggedIn) return;
+            
+            const date = document.getElementById('post-date').value;
+            const header = document.getElementById('post-header').value;
+            const description = document.getElementById('post-description').value;
+            
+            if (date && header && description) {
+                createPost(date, header, description);
+                
+                // Reset form except date
+                document.getElementById('post-header').value = '';
+                document.getElementById('post-description').value = '';
+                
+                // Show success feedback
+                const button = this.querySelector('.btn');
+                const originalText = button.textContent;
+                button.textContent = 'Submitted! ♡';
+                button.style.background = 'linear-gradient(135deg, #8B4513 0%, #A0522D 100%)';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                }, 2500);
+            }
+        });
+
+        // Add some sample posts for demonstration
+        setTimeout(() => {
+            createPost('2024-01-15', 'Whispers of Dawn', 'The morning light dances through my window,\nKissing the earth with golden rays.\nIn this quiet moment, I find peace,\nAs nature awakens to a brand new day.\n\nBirds sing their melodious songs,\nThe world comes alive with hope anew.\nIn every sunrise, there\'s a promise,\nThat dreams can still come true.');
+            createPost('2024-01-10', 'Reflective Evening', 'Tonight I sit by the window, watching the stars appear one by one. There\'s something magical about the transition from day to night. My heart feels full of gratitude for the simple moments that make life beautiful. Sometimes the most profound feelings come in the quietest hours.');
+            createPost('2024-01-05', 'Ocean of Memories', 'Waves of memories wash over me,\nLike tides upon a distant shore.\nEach one carries fragments of time,\nMoments I\'ve lived and loved before.\n\nIn the depths of recollection,\nI find treasures buried deep.\nPrecious gems of joy and sorrow,\nMemories that I\'ll always keep.');
+        }, 500);
+
+        // Initialize the page with posts visible
+        renderPosts();
     </script>
 </body>
 </html>

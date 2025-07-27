@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prsha...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f8d7da, #f2c2c6);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+            position: relative;
+        }
+
+        h1 {
+            color: #7B3F00;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+            font-style: italic;
+        }
+
+        .subtitle {
+            color: #7B3F00;
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+
+        .login-to-post-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #7B3F00;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-to-post-btn:hover {
+            background: #5D2F00;
+            transform: translateY(-2px);
+        }
+
+        .login-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .close {
+            color: #7B3F00;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: #5D2F00;
+        }
+
+        .admin-controls {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .blog-post {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .blog-post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .post-date {
+            color: #7B3F00;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .post-title {
+            color: #7B3F00;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .post-content {
+            color: #7B3F00;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .post-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #ff99cc;
+            color: #7B3F00;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .tag:hover {
+            background: #ff66b3;
+        }
+
+        .photo-upload {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px dashed #ff99cc;
+            border-radius: 10px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .photo-upload input[type="file"] {
+            margin: 10px 0;
+            padding: 8px;
+            border: 1px solid #ff99cc;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .uploaded-photos {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .photo-container {
+            position: relative;
+            max-width: 200px;
+        }
+
+        .uploaded-photo {
+            width: 100%;
+            max-width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 3px solid #ff99cc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .remove-photo {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 1;
+        }
+
+        .new-post-form {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #7B3F00;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ff99cc;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff66b3;
+            box-shadow: 0 0 0 3px rgba(255, 153, 204, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: #7B3F00;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(123, 63, 0, 0.4);
+        }
+
+        .toggle-form-btn {
+            background: #7B3F00;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-form-btn:hover {
+            background: #5D2F00;
+        }
+
+        .logout-btn {
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #e6435a;
+        }
+
+        .delete-btn {
+            background: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s ease;
+            float: right;
+        }
+
+        .delete-btn:hover {
+            background: #e6435a;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .post-date-title {
+            flex: 1;
+        }
+
+        .read-more {
+            color: #7B3F00;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .read-more:hover {
+            border-color: #7B3F00;
+        }
+
+        .error-message {
+            color: #ff4d6d;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #7B3F00;
+            font-style: italic;
+            margin: 60px 0;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px 0;
+            color: #7B3F00;
+            font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .blog-post {
+                padding: 20px;
+            }
+
+            .login-to-post-btn {
+                position: static;
+                margin: 20px auto 0;
+                display: block;
+                width: fit-content;
+            }
+
+            header {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="login-to-post-btn" onclick="openLoginModal()">🔑 Login to Post</button>
+            <h1>Prsha...</h1>
+            <p class="subtitle">"Time... Memories.. Moments, feelings lead us to tears..<br>Hope my Love, care and friendship wins over your fears..."</p>
+        </header>
+
+        <!-- Login Modal -->
+        <div id="loginModal" class="login-modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeLoginModal()">&times;</span>
+                <h3 style="color: #7B3F00; margin-bottom: 20px; text-align: center;">Login to Create Posts</h3>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" placeholder="Enter password">
+                </div>
+                <button onclick="login()" class="submit-btn" style="width: 100%;">🔐 Login</button>
+                <div id="loginError" class="error-message" style="display: none; text-align: center;"></div>
+            </div>
+        </div>
+
+        <main>
+            <!-- Admin Controls (only visible when logged in) -->
+            <div id="adminControls" class="admin-controls">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="color: #7B3F00; margin: 0;">Admin Panel</h3>
+                    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+                </div>
+                
+                <button class="toggle-form-btn" onclick="toggleNewPostForm()">✏️ Write New Post</button>
+                
+                <div id="newPostForm" class="new-post-form" style="display: none;">
+                    <h3 style="color: #7B3F00; margin-bottom: 20px;">Create New Blog Post</h3>
+                    <div class="form-group">
+                        <label for="postTitle">Post Title:</label>
+                        <input type="text" id="postTitle" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postDate">Post Date:</label>
+                        <input type="date" id="postDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postContent">Content:</label>
+                        <textarea id="postContent" placeholder="Share your thoughts..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postTags">Tags (separate with commas):</label>
+                        <input type="text" id="postTags" placeholder="life, thoughts, inspiration">
+                    </div>
+                    
+                    <div class="photo-upload">
+                        <label style="color: #8b4c6b; font-size: 14px;">Upload Photos (up to 2):</label>
+                        <input type="file" id="photo1" accept="image/*" onchange="previewPhoto(this, 'preview1')">
+                        <input type="file" id="photo2" accept="image/*" onchange="previewPhoto(this, 'preview2')">
+                        <div class="uploaded-photos">
+                            <div class="photo-container" id="preview1" style="display: none;">
+                                <img class="uploaded-photo" src="" alt="Preview 1">
+                                <button type="button" class="remove-photo" onclick="removePhoto('photo1', 'preview1')">×</button>
+                            </div>
+                            <div class="photo-container" id="preview2" style="display: none;">
+                                <img class="uploaded-photo" src="" alt="Preview 2">
+                                <button type="button" class="remove-photo" onclick="removePhoto('photo2', 'preview2')">×</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="submit-btn" onclick="addNewPost(event)">📝 Publish Post</button>
+                </div>
+            </div>
+
+            <!-- Blog Posts Display -->
+            <div id="blogPosts"></div>
+        </main>
+
+        <footer>
+            <p>Made with 💕 and lots of pink pixels</p>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize with empty posts array
+        let blogPosts = [];
+        let isLoggedIn = false;
+
+        // Login credentials
+        const validUsername = "Prsha";
+        const validPassword = "V@P$0407";
+
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (username === validUsername && password === validPassword) {
+                isLoggedIn = true;
+                closeLoginModal();
+                document.getElementById('adminControls').style.display = 'block';
+                document.querySelector('.login-to-post-btn').style.display = 'none';
+                renderPosts();
+            } else {
+                errorDiv.textContent = 'Invalid username or password. Please try again.';
+                errorDiv.style.display = 'block';
+                document.getElementById('password').value = '';
+            }
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            document.getElementById('adminControls').style.display = 'none';
+            document.querySelector('.login-to-post-btn').style.display = 'block';
+            document.getElementById('newPostForm').style.display = 'none';
+            document.querySelector('.toggle-form-btn').textContent = '✏️ Write New Post';
+            clearForm();
+            renderPosts();
+        }
+
+        function toggleNewPostForm() {
+            const form = document.getElementById('newPostForm');
+            const btn = document.querySelector('.toggle-form-btn');
+            
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+                btn.textContent = '❌ Cancel';
+            } else {
+                form.style.display = 'none';
+                btn.textContent = '✏️ Write New Post';
+                clearForm();
+            }
+        }
+
+        function previewPhoto(input, previewId) {
+            const file = input.files[0];
+            const preview = document.getElementById(previewId);
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.querySelector('img').src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removePhoto(inputId, previewId) {
+            document.getElementById(inputId).value = '';
+            document.getElementById(previewId).style.display = 'none';
+        }
+
+        function clearForm() {
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postDate').value = '';
+            document.getElementById('postContent').value = '';
+            document.getElementById('postTags').value = '';
+            document.getElementById('photo1').value = '';
+            document.getElementById('photo2').value = '';
+            document.getElementById('preview1').style.display = 'none';
+            document.getElementById('preview2').style.display = 'none';
+        }
+
+        function addNewPost(event) {
+            if (event) event.preventDefault();
+            
+            if (!isLoggedIn) {
+                alert('Please login first to create posts.');
+                return;
+            }
+
+            const title = document.getElementById('postTitle').value.trim();
+            const selectedDate = document.getElementById('postDate').value;
+            const content = document.getElementById('postContent').value.trim();
+
+            // Validate required fields
+            if (!title) {
+                alert('Please enter a post title.');
+                return;
+            }
+            if (!selectedDate) {
+                alert('Please select a date.');
+                return;
+            }
+            if (!content) {
+                alert('Please enter some content.');
+                return;
+            }
+            
+            const tagsInput = document.getElementById('postTags').value;
+            const tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag);
+            
+            // Convert selected date to DD/MM/YYYY format
+            const dateObj = new Date(selectedDate);
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const year = dateObj.getFullYear();
+            const formattedDate = `${day}/${month}/${year}`;
+            
+            // Use the selected date for timestamp (for sorting)
+            const timestamp = dateObj.getTime();
+            
+            // Handle photos
+            const photos = [];
+            const photo1 = document.getElementById('photo1').files[0];
+            const photo2 = document.getElementById('photo2').files[0];
+            
+            if (photo1) {
+                const reader1 = new FileReader();
+                reader1.onload = function(e) {
+                    photos.push(e.target.result);
+                    if (photo2) {
+                        const reader2 = new FileReader();
+                        reader2.onload = function(e) {
+                            photos.push(e.target.result);
+                            createPost();
+                        };
+                        reader2.readAsDataURL(photo2);
+                    } else {
+                        createPost();
+                    }
+                };
+                reader1.readAsDataURL(photo1);
+            } else if (photo2) {
+                const reader2 = new FileReader();
+                reader2.onload = function(e) {
+                    photos.push(e.target.result);
+                    createPost();
+                };
+                reader2.readAsDataURL(photo2);
+            } else {
+                createPost();
+            }
+            
+            function createPost() {
+                const newPost = { date: formattedDate, title, content, tags, photos, timestamp };
+                blogPosts.push(newPost);
+                
+                // Sort posts by timestamp (newest first)
+                blogPosts.sort((a, b) => b.timestamp - a.timestamp);
+                
+                renderPosts();
+                toggleNewPostForm();
+                alert('Post published successfully!');
+            }
+        }
+
+        function deletePost(index) {
+            if (!isLoggedIn) {
+                alert('Please login first to delete posts.');
+                return;
+            }
+            
+            if (confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
+                blogPosts.splice(index, 1);
+                renderPosts();
+            }
+        }
+
+        function renderPosts() {
+            const container = document.getElementById('blogPosts');
+            container.innerHTML = '';
+            
+            if (blogPosts.length === 0) {
+                container.innerHTML = '<div class="empty-state">No posts yet. Share your first memory! ✨</div>';
+                return;
+            }
+            
+            blogPosts.forEach((post, index) => {
+                const article = document.createElement('article');
+                article.className = 'blog-post';
+                
+                const photosHtml = post.photos.length > 0 ? 
+                    `<div class="uploaded-photos" style="margin: 15px 0;">
+                        ${post.photos.map(photo => 
+                            `<img src="${photo}" class="uploaded-photo" alt="Blog post photo">`
+                        ).join('')}
+                    </div>` : '';
+                
+                const tagsHtml = post.tags.map(tag => 
+                    `<span class="tag">${tag}</span>`
+                ).join('');
+
+                const deleteButtonHtml = isLoggedIn ? 
+                    `<button class="delete-btn" onclick="deletePost(${index})" title="Delete this post">🗑️ Delete</button>` : '';
+                
+                article.innerHTML = `
+                    <div class="post-header">
+                        <div class="post-date-title">
+                            <div class="post-date">${post.date}</div>
+                            <h2 class="post-title">${post.title}</h2>
+                        </div>
+                        ${deleteButtonHtml}
+                    </div>
+                    ${photosHtml}
+                    <div class="post-content">
+                        ${post.content.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('')}
+                    </div>
+                    <div class="post-tags">
+                        ${tagsHtml}
+                    </div>
+                `;
+                
+                container.appendChild(article);
+            });
+        }
+
+        // Modal click outside to close
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                closeLoginModal();
+            }
+        }
+
+        // Allow Enter key to submit login
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    login();
+                }
+            });
+            
+            document.getElementById('username').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('password').focus();
+                }
+            });
+
+            // Set today's date as default for post date
+            const today = new Date();
+            const todayString = today.toISOString().split('T')[0];
+            setTimeout(() => {
+                if (document.getElementById('postDate')) {
+                    document.getElementById('postDate').value = todayString;
+                }
+            }, 100);
+        });
+
+        // Initial render
+        renderPosts();
+    </script>
+</body>
+</html>

@@ -398,6 +398,33 @@
             font-size: 14px;
         }
 
+        .code-output {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+        }
+
         footer {
             text-align: center;
             margin-top: 60px;
@@ -462,7 +489,12 @@
             <!-- Admin Controls (only visible when logged in) -->
             <div id="adminControls" class="admin-controls">
                 <div class="github-note">
-                    <strong>📝 Note:</strong> This blog uses GitHub as a database. You'll need to manually update the posts.json file in your repository to publish posts globally.
+                    <strong>📝 How to publish posts:</strong><br>
+                    1. Create your post below and click "Generate Post Code"<br>
+                    2. Copy the generated JSON code<br>
+                    3. Go to your GitHub repository and edit the <code>posts.json</code> file<br>
+                    4. Add the new post to the "posts" array<br>
+                    5. Commit the changes - your post will appear for everyone!
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -486,12 +518,12 @@
                     
                     <div class="form-group">
                         <label for="postContent">Content:</label>
-                        <textarea id="postContent" placeholder="Share your thoughts..." required></textarea>
+                        <textarea id="postContent" placeholder="Share your thoughts, memories, and moments..." required></textarea>
                     </div>
                     
                     <div class="form-group">
                         <label for="postTags">Tags (separate with commas):</label>
-                        <input type="text" id="postTags" placeholder="life, thoughts, inspiration">
+                        <input type="text" id="postTags" placeholder="life, memories, thoughts, feelings">
                     </div>
                     
                     <div class="photo-upload">
@@ -513,22 +545,25 @@
                     <button type="button" class="submit-btn" onclick="generatePostCode()" id="publishBtn">📝 Generate Post Code</button>
                     
                     <div id="generatedCode" style="display: none; margin-top: 20px;">
-                        <h4 style="color: #7B3F00;">Copy this code and add it to your posts.json file:</h4>
-                        <textarea id="postCodeOutput" style="width: 100%; height: 200px; margin-top: 10px; font-family: monospace; font-size: 12px;" readonly></textarea>
-                        <p style="color: #8b4c6b; font-size: 14px; margin-top: 10px;">
-                            1. Copy the above code<br>
+                        <h4 style="color: #7B3F00; margin-bottom: 10px;">📋 Copy this code and add it to your posts.json file:</h4>
+                        <div class="code-output" id="postCodeOutput"></div>
+                        <button class="copy-btn" onclick="copyPostCode()">📋 Copy Code</button>
+                        <div style="color: #8b4c6b; font-size: 14px; margin-top: 15px; line-height: 1.4;">
+                            <strong>Next steps:</strong><br>
+                            1. Copy the code above<br>
                             2. Go to your GitHub repository<br>
-                            3. Edit posts.json file<br>
-                            4. Add this post to the "posts" array<br>
-                            5. Commit changes
-                        </p>
+                            3. Open and edit the <code>posts.json</code> file<br>
+                            4. Add this post object to the "posts" array (at the beginning for newest first)<br>
+                            5. Commit the changes<br>
+                            6. Your post will be live in 1-2 minutes!
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Blog Posts Display -->
             <div id="blogPosts">
-                <div class="loading">Loading posts...</div>
+                <div class="loading">Loading your memories and moments...</div>
             </div>
         </main>
 
@@ -542,9 +577,9 @@
         let blogPosts = [
             {
                 date: "27/07/2025",
-                title: "Welcome to My Blog",
-                content: "This is my first post on my beautiful blog. I'm excited to share my thoughts, memories, and moments with you. This blog uses GitHub as a database to store posts permanently.",
-                tags: ["welcome", "first-post", "memories"],
+                title: "Welcome to My Heart",
+                content: "This is where I'll share my deepest thoughts, precious memories, and beautiful moments. Each post is a piece of my soul, captured in time. Thank you for being part of this journey with me.\n\nHere, feelings flow freely, tears are welcomed, and hope always wins over fears.",
+                tags: ["welcome", "heart", "memories", "journey"],
                 photos: [],
                 timestamp: new Date('2025-07-27').getTime()
             }
@@ -555,10 +590,9 @@
         const validUsername = "Prsha";
         const validPassword = "V@P$0407";
 
-        // Load posts from GitHub (you'll need to implement this)
+        // Load posts from GitHub posts.json
         async function loadPostsFromGitHub() {
             try {
-                // Try to load from posts.json in your repository
                 const response = await fetch('./posts.json');
                 if (response.ok) {
                     const data = await response.json();
@@ -567,7 +601,7 @@
                     }
                 }
             } catch (error) {
-                console.log('Using default posts');
+                console.log('Using default posts - create posts.json file to add your own posts');
             }
             renderPosts();
         }
@@ -736,18 +770,45 @@
                 };
                 
                 const postCode = JSON.stringify(newPost, null, 2);
-                document.getElementById('postCodeOutput').value = postCode;
+                document.getElementById('postCodeOutput').textContent = postCode;
                 document.getElementById('generatedCode').style.display = 'block';
+                
+                // Store for copying
+                window.generatedPostCode = postCode;
+            }
+        }
+
+        function copyPostCode() {
+            if (window.generatedPostCode) {
+                navigator.clipboard.writeText(window.generatedPostCode).then(function() {
+                    const btn = document.querySelector('.copy-btn');
+                    const originalText = btn.textContent;
+                    btn.textContent = '✅ Copied!';
+                    btn.style.background = '#28a745';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.background = '#28a745';
+                    }, 2000);
+                }).catch(function() {
+                    // Fallback for older browsers
+                    const textarea = document.createElement('textarea');
+                    textarea.value = window.generatedPostCode;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    alert('Code copied to clipboard!');
+                });
             }
         }
 
         function deletePost(index) {
             if (!isLoggedIn) {
-                alert('Please login first to delete posts.');
+                alert('Please login first to manage posts.');
                 return;
             }
             
-            alert('To delete this post, remove it from your posts.json file in GitHub and commit the changes.');
+            alert('To delete this post:\n1. Go to your GitHub repository\n2. Edit the posts.json file\n3. Remove this post from the array\n4. Commit the changes');
         }
 
         function renderPosts() {
@@ -755,7 +816,7 @@
             container.innerHTML = '';
             
             if (blogPosts.length === 0) {
-                container.innerHTML = '<div class="empty-state">No posts yet. Share your first memory! ✨</div>';
+                container.innerHTML = '<div class="empty-state">No memories shared yet. Login to share your first moment! ✨</div>';
                 return;
             }
             
@@ -766,16 +827,16 @@
                 const photosHtml = post.photos && post.photos.length > 0 ? 
                     `<div class="uploaded-photos" style="margin: 15px 0;">
                         ${post.photos.map(photo => 
-                            `<img src="${photo}" class="uploaded-photo" alt="Blog post photo">`
+                            `<img src="${photo}" class="uploaded-photo" alt="Memory photo">`
                         ).join('')}
                     </div>` : '';
                 
-                const tagsHtml = post.tags ? post.tags.map(tag => 
+                const tagsHtml = post.tags && post.tags.length > 0 ? post.tags.map(tag => 
                     `<span class="tag">${tag}</span>`
                 ).join('') : '';
 
                 const deleteButtonHtml = isLoggedIn ? 
-                    `<button class="delete-btn" onclick="deletePost(${index})" title="Delete this post">🗑️ Delete Info</button>` : '';
+                    `<button class="delete-btn" onclick="deletePost(${index})" title="Delete instructions">🗑️ Delete Info</button>` : '';
                 
                 article.innerHTML = `
                     <div class="post-header">
@@ -789,9 +850,7 @@
                     <div class="post-content">
                         ${post.content.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('')}
                     </div>
-                    <div class="post-tags">
-                        ${tagsHtml}
-                    </div>
+                    ${tagsHtml ? `<div class="post-tags">${tagsHtml}</div>` : ''}
                 `;
                 
                 container.appendChild(article);
@@ -801,37 +860,4 @@
         // Modal click outside to close
         window.onclick = function(event) {
             const modal = document.getElementById('loginModal');
-            if (event.target == modal) {
-                closeLoginModal();
-            }
-        }
-
-        // Allow Enter key to submit login
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('password').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    login();
-                }
-            });
-            
-            document.getElementById('username').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    document.getElementById('password').focus();
-                }
-            });
-
-            // Set today's date as default for post date
-            const today = new Date();
-            const todayString = today.toISOString().split('T')[0];
-            setTimeout(() => {
-                if (document.getElementById('postDate')) {
-                    document.getElementById('postDate').value = todayString;
-                }
-            }, 100);
-
-            // Load posts from GitHub
-            loadPostsFromGitHub();
-        });
-    </script>
-</body>
-</html>
+            if (event.target == modal)

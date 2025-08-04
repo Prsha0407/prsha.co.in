@@ -97,6 +97,8 @@
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .post-title {
@@ -105,6 +107,7 @@
             margin: 0;
             font-style: italic;
             flex: 1;
+            min-width: 200px;
         }
 
         .post-meta {
@@ -114,6 +117,44 @@
             gap: 8px;
             font-size: 0.9em;
             color: #8B4513;
+        }
+
+        .post-font-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            padding: 6px 10px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            font-size: 0.8em;
+        }
+
+        .post-font-btn {
+            background: rgba(139, 69, 19, 0.2);
+            border: 1px solid rgba(139, 69, 19, 0.4);
+            color: #8B4513;
+            padding: 4px 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.75em;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            min-width: 25px;
+        }
+
+        .post-font-btn:hover {
+            background: rgba(139, 69, 19, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .post-font-size-display {
+            color: #8B4513;
+            font-size: 0.75em;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
         }
 
         .post-date {
@@ -131,6 +172,7 @@
             line-height: 1.9;
             white-space: pre-wrap;
             font-style: italic;
+            transition: font-size 0.3s ease;
         }
 
         .welcome-message {
@@ -167,6 +209,12 @@
 
             .post-meta {
                 align-items: flex-start;
+                width: 100%;
+            }
+
+            .post-font-controls {
+                justify-content: center;
+                width: 100%;
             }
         }
 
@@ -248,14 +296,14 @@
               id: 41,
               date: 'Aug 3, 2025',
               header: '#BestFriends..',
-             fontSize: 110, // Custom font size for this post 
-             description: 'With Friends around smiles Blend.\nFights might happen, its not an End.\nTrue friendships, there is never a DeadEnd..\n& With BestFriends Happiness becomes a Trend..\nHappy Friendship day to all my friends.\n#Friends4life #happyfriendshipday',
+              fontSize: 90, // Custom font size for this post 
+              description: 'With Friends around smiles Blend.\nFights might happen, its not an End.\nTrue friendships, there is never a DeadEnd..\n& With BestFriends Happiness becomes a Trend..\nHappy Friendship day to all my friends.\n#Friends4life #happyfriendshipday',
             },
            {
               id: 40,
               date: 'Aug 3, 2025',
               header: 'My tribute..',
-              fontSize: 95, // Custom font size for this post 
+              fontSize: 90, // Custom font size for this post 
               description: 'From a wish which was on call mute (Yr.2023)\nTo the days where I am made to mute (Yr.2025)\n \nWill be #committed4life #4you as my TRIBUTE\n \nHappy Friendship day… \n\n#Committed4life #HappyFriendshipday #Missu #MissA&A',
             },
           {
@@ -497,6 +545,51 @@
             },
         ];
 
+        // Font size management for individual posts
+        let postFontSizes = {}; // Store runtime font size changes
+
+        function getPostFontSize(postId) {
+            // Check if there's a runtime override first
+            if (postFontSizes[postId] !== undefined) {
+                return postFontSizes[postId];
+            }
+            // Otherwise use the predefined fontSize from post data
+            const post = posts.find(p => p.id === postId);
+            return post && post.fontSize ? post.fontSize : 100;
+        }
+
+        function setPostFontSize(postId, size) {
+            postFontSizes[postId] = size;
+            const postContent = document.querySelector(`[data-post-id="${postId}"] .post-content`);
+            if (postContent) {
+                postContent.style.fontSize = `${size / 100 * 1.1}em`;
+            }
+            const display = document.querySelector(`[data-post-id="${postId}"] .post-font-size-display`);
+            if (display) {
+                display.textContent = `${size}%`;
+            }
+        }
+
+        function increasePostFontSize(postId) {
+            const currentSize = getPostFontSize(postId);
+            const newSize = Math.min(currentSize + 10, 200);
+            setPostFontSize(postId, newSize);
+        }
+
+        function decreasePostFontSize(postId) {
+            const currentSize = getPostFontSize(postId);
+            const newSize = Math.max(currentSize - 10, 60);
+            setPostFontSize(postId, newSize);
+        }
+
+        function resetPostFontSize(postId) {
+            // Reset to the original predefined fontSize or 100%
+            const post = posts.find(p => p.id === postId);
+            const originalSize = post && post.fontSize ? post.fontSize : 100;
+            delete postFontSizes[postId]; // Remove runtime override
+            setPostFontSize(postId, originalSize);
+        } 
+        
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('en-US', {
